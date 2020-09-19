@@ -4,22 +4,6 @@
 This cheat sheet is in a reasonably useful state for basic things, but it does contain some errors.
 Also note that Rust is still changing quite a bit as of 2020, so some of the below may be outdated/deprecated. 
 
-## Rust in a Nutshell
-
-* Syntax tokens similar to C
-* Ownership of memory enforced at build time
-* Statically linked
-* Functional-ish, generic-ish, not so objecty
-* Control flow using patterns, 'match' keyword
-* Packages: 'cargo' command, https://crates.io
-* Testing: cargo test, #[test]
-* Concurrency: ownership, mutability, channels, mutex, crossbeam + Rayon packages
-* Auto formatter: rustfmt filename.rs (see rust-lang.org for installation)
-* compiler engine: LLVM
-* raw pointers, low level: unsafe{} keyword
-* online playgrounds: https://play.rust-lang.org, https://tio.run/ 
-* A survivial horror game where griefing is ... oops wrong Rust
-
 ## Hello World
 
 & see https://www.rust-lang.org for installation details
