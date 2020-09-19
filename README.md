@@ -1,9 +1,3 @@
-
-## Warning
-
-This cheat sheet is in a reasonably useful state for basic things, but it does contain some errors.
-Also note that Rust is still changing quite a bit as of 2020, so some of the below may be outdated/deprecated. 
-
 ## Hello World
 
 & see https://www.rust-lang.org for installation details
@@ -112,7 +106,6 @@ println!("{}",v.iter_mut());    // for example, if we want to know the type of v
                         
  ```
 
-
 ## Operators
 
 ```rust
@@ -139,8 +132,6 @@ overloading: see struct
 ```
 
 ## Run time errors, Crashing, panic, except, unwrap, Option, Result
-
-
 
 ```rust
 panic!("oops");             // panic!() instantly crashes program
@@ -194,7 +185,6 @@ be wrapped inside an Err(). Not 'catching' a Result when you call calcualte_blor
 More examples with options:
 
 ```
-
 let x = do_somthing_that_might_not_work(); // Option can help handle errors 
 match x {
 	Some(x)=>println!("OK!"),
@@ -231,7 +221,6 @@ for owl in &owls {
 ```
 
 Note that there are no Exceptions. panic/Option/Result/multi-value-return are used instead. 
-
 ## Printing
 
 ```rust
@@ -323,7 +312,6 @@ while let Some(i) = x.next() {print!("{}:",i);}
 // 0:2:4:6:8:10:   // prints the even numbers between 0 and 12
 ```
 
-
 ## Concurrency, parallel processing
 
 ```rust
@@ -398,7 +386,6 @@ fn maximum(t:i8,...) {} // error, can't have variable number of arguments. see M
 ```
 
 ## Unit tests, integration tests
-
 Unit tests, placed in the same file as the code being tested
 
 ```rust
@@ -435,7 +422,6 @@ $ cargo test           # test build, will include cfg(test) sections
 ```
 
 ## Documentation
-
 rust-doc and cargo doc allow automatic building of html documentation
 for code. precede documentation of your code with three slashmarks
 instead of the normal two slashmarks, like so:
@@ -651,9 +637,7 @@ let b = Apple{color:(9,12,38),..a };      // this is called "struct update"
 
 ```
 
-
 ## Enums
-
 ```rust
 enum Fruit { Apple, Banana, Pear }
 let x = call_some_function( Fruit::Apple );  
@@ -741,11 +725,7 @@ ty      // type.                       vis     // visibility qualifier
 */
 ```
 
-
-
-
 ## Arrays, Slices, Ranges
-
 array
 
 ```
@@ -783,7 +763,6 @@ fn main() {
 ```
 
 ## Split_At_Mut - Mutability and References into a Vector
-
 For the special case for getting references to items within a vector:
 
 Imagine we have three Wheels (struct W) with radius (W.r) and they are inside
@@ -824,10 +803,6 @@ It can create mutable slices, which allow mutable access to the vector.
     println!("{:?} {:?}",l,r); // [W { r: 2 }, W { r: 4 }] [W { r: 8 }]
     println!("{:?}",v); // [W { r: 2 }, W { r: 4 }, W { r: 8 }]
 ```
-
-## Object Oriented style
-
-Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), and even Enums.
 
 ## Files
 
@@ -916,15 +891,6 @@ let progname = std::env::args().nth(0).unwrap_or("yr system is very broken".to_s
 
 packages: docopt, clap, getopts, structopt
 
-
-## Reflection
-
-todo
-
-## Traits
-
-todo. Traits are like 'interfaces' in other languages.
-
 ## Iterators, functional style programming
 
 ```rust
@@ -996,8 +962,6 @@ filter_map() // combine filter and map
 print!("{}",vec![3,4,5].iter().eq(vec![1,3,4,5].iter().skip(1))); // true
 
 ```
-
-
 
 Itertools library: more adapters
 ```rust
@@ -1214,7 +1178,6 @@ u32::from_be_bytes([ss[0],ss[1],ss[2],ss[3]]); // wrap slice pieces into an arra
 // string conversion
 
 ```
-
 use std::i64;
 let z = i64::from_str_radix("0x1f".trim_left_matches("0x"), 16).unwrap(); // hex string to integer
 
@@ -1238,7 +1201,6 @@ let s = "hello".to_string();        // s = String
 let m = s.replace("hello","new");   // m = "new"
 let y = s.to_uppercase();           // y = "NEW"
 ```
-
 
 // str implements Write, sort of like C++ stringstream
 // str.as_bytes() converts to slice, which implements Read, similarly
@@ -1271,7 +1233,6 @@ let re = Regex::new(r"(?ms)city is (?P<citname>.*?).$.*?beautiful on (?P<streetn
 let caps = re.captures(text).unwrap();
 println!("{}, {}",&caps["streetname"],&caps["citname"]);               // la Rue de Cherche Midi, Paris
 ```
-
 
 ### comparison and sorting
 
@@ -1309,35 +1270,6 @@ fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering {      // sort using a 
 v.sort_by( compare_s );                        
 ```
 
-### Pseudo randoms
-
-Pseudo Random number generators, aka PRNGs
-
-```rust
-extern crate rand;   /// add rand to dependencies in Cargo.toml
-use rand::prelude::*; 
-let x = rand::random(); // boolean
-let y = rand::random::<int>(); // integer
-let x = rand::thread_rng().gen_range(0, 100); // between
-let mut rng = rand::thread_rng();
-let z: f64 = rng.gen(); // float 0...1
-let mut nums: Vec<i32> = (1..100).collect();
-nums.shuffle(&mut rng);
-```
-```rust
-// alternative, without needing external crate, based on codeproject.com by Dr John D Cook
-// https://www.codeproject.com/Articles/25172/Simple-Random-Number-Generation
-// License: BSD, see https://opensource.org/licenses/bsd-license.php
-use std::time::{SystemTime, UNIX_EPOCH};
-let mut m_z = SystemTime::now().duration_since(UNIX_EPOCH).expect("Time reversed").as_millis();
-let mut m_w = m_z.wrapping_add( 1 );
-let mut prng = || {  m_z = 36969 * (m_z & 65535) + (m_z >> 16);
-                     m_w = 18000 * (m_w & 65535) + (m_w >> 16);
-                     m_z.rotate_left( 16 ) + m_w };
-let buf = (0..1000).map(|_| prng() as u8).collect::<Vec<u8>>();
-// creates 1000 random bytes in buf, using Closure named prng
-```
-
 ### Hashing
 
 ```rust
@@ -1353,46 +1285,6 @@ println!("{:x}", hasher.finish());     // .finish() function Hasher gives curren
 println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher objects
 
 ```
-
-### Time
-
-```
-use std::time::{Instant};
-let t = Instant::now();
-// do something for 5.3 seonds
-println!("{}",t.elapsed().as_secs());          // 5, seconds, rounded
-println!("{}",t.elapsed().subsec_millis());    // 300. remainder in milliseconds
-
-```
-
-
-
-## Annotations
-
-Aka hashtags aka warning thingies. These statements typically affect compilation and begin with a hashtag, and square brackets. They are sort of like a mix of #pragma and #ifdef from C. 
-
-```rust
-#![allow(dead_code)]             // stop compiler from printing warnings on unused funcs/vars,   
-#![allow(unused_variables)]      // this is good when you are working on a library
-//  = note: #[warn(unused_assignments)] on by default
-#![allow(unused_assignments)]    // you can take most warnings, and disable by changing 'warn' to 'allow'
-
-// by removing ! and placing on line before a fn, you can disbale warning only for the function
-#[allow(unused_assignments)]     
-fn zoogle_poof( n:u8 )->u8 { let a = 0; 5+n };
-
-let mut a = 0x00ffee22;          // modify numbers for big endian machines.
-#[cfg(target_endian = "big")]    // target = machine the code will be run on
-a = a.swap_bytes();              // the line (or block) immediately following the # gets affected.
-```
-
-## Linked Lists
-
-Textbook C/Java-style implementations of linked lists often involve ownership that is not allowed by the Rust borrow checker. However it can be accomplished. There is builting "LinkedList" type in std::collections, also some resources from A. Beinges :
-
-https://cglab.ca/~abeinges/blah/too-many-lists/book/
-
-You can also implement a linked list as a Vector of structs, using integer indexes into the vector instead of pointers.
 
 ## FFI, Calling C functions, porting C code
 
@@ -1468,86 +1360,6 @@ This is C. Here is text from Rust: blarg
 This is Rust. Here's text from C: blerg
 ```
 
-See also: https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
-
-c++ - https://hsivonen.fi/modern-cpp-in-rust/
-
-https://doc.rust-lang.org/nomicon/ffi.html
-
-Michael Bryan's unofficial guide
-https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
-
-Using char** C functions:
-https://stackoverflow.com/questions/42717473/passing-vecstring-from-rust-to-char-in-c
-
-Note that much C code does not initialize structs or memory, which may be forgotten
-when one is used to Rust
-http://www.ex-parrot.com/~chris/random/initialise.html
-
-Structs and bindgen auto header conversion
-https://medium.com/dwelo-r-d/using-c-libraries-in-rust-13961948c72a
-
-
-Setting CFLAGS examples:
-
-modify build.rs:
-
-```rust
-extern crate cc;
-
-fn main() {
-    std::env::set_var("CFLAGS","-w");  // turn off all warnings
-    std::env::set_var("CFLAGS","-v");  // run compiler in verbose mode
-    std::env::set_var("CFLAGS","-v -O2");  // optimize level 2 + verbose mode
-    cc::Build::new().file("src/ccode.c").compile("ccode");
-}
-```
-
-Unions:
-
-In Rust, Enums are typically preferred over union, as a traditional C-style union is
-only available by using unsafe{}. But unions can help talking to / porting C code:
-``` rust
-#[repr(C)]
-union Borgle { dorgle: u32, porgle: u8[4] }
-let mut a=Borgle{dorgle:1234};
-unsafe{ a.dorgle = 0xa0ca0c };
-```
-
-Goto vs labels, loops, and breaks:
-
-Rust does not have Goto, however sometimes a similar result 
-can be achieved using labelled loops and breaks. 
-
-```rust
-    'label1: loop {
-    	if zimblatz == 5 {
-	    break; // breaks labe1 loop
-	}
-        'label2: for frobnoz in 0..4 {
-            if blorg==KUMQUAT {break;} // breaks label2 only
-	    while j<5 {
-	    	if snog==7 { 
-			// goto end of label1 loop immediately
-			break 'label1; 
-		}
-		j+=1;
-	    }
-        }	
-    } // end of 'label1 loop
-    do_something();
-```
-
-Pointer arithmetic
-
-```rust
-use std::raw::c_uchar;
-unsafe{
-	let mut x = some_c_func() as *const c_uchar;
-	x = x.offset(1);  // instead of x++
-}
-```
-
 ## source code layout
 
 Here is a typical source code organization layout for a simple library, which has a handful of modules, some examples, integration tests, benchmarking, and two executable binaries.
@@ -1607,74 +1419,5 @@ fn dosomething() { let x = do_stuff(9);}
 fn build_monster(x:u8) -> Monster { if x<5 { bloom(Zorgnog::Norg) } else { bloom(Zorgnog::Beezle) }
 ```
 
-
-
 See also
 https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-privacy.html
-
-
-## ANSI colors
-
-In C, ansi colors for terminal text output are typically done with the escape code
-in octal format, such as printf("\033]0;31m test red"); In Rust, you can use
-the unicode escape sequence, instead of 033 octal, we can use unicode with 001b hexadecimal:
-
-```rust
-fn main() {
-    println!("\u{001b}[0;31m{}", "test red");
-    println!("\u{001b}[0;32m{}", "test green");
-    println!("\u{001b}[0;33m{}", "test orange");
-    println!("\u{001b}[0;34m{}", "test blue");
-    println!("\u{001b}[0;35m{}", "test magenta");
-    println!("\u{001b}[0;36m{}", "test cyan");
-    println!("\u{001b}[0;37m{}", "test white");
-    println!("\u{001b}[0;91m{}", "test bright red");
-    println!("\u{001b}[0;92m{}", "test bright green");
-    println!("\u{001b}[0;93m{}", "test yellow");
-    println!("\u{001b}[0;94m{}", "test bright blue");
-    println!("\u{001b}[0;95m{}", "test bright magenta");
-    println!("\u{001b}[0;96m{}", "test bright cyan");
-    println!("\u{001b}[0;97m{}", "test bright white");
-    println!("\u{001b}[0m{}", "restored to default");
-}
-```
-
-There are also several crates that do this. Search the web for additional ANSI color features.
-
-## Metacritic rating
-
-Rust has an excellent crafting and building system. The character models are a bit wide, and combat is lacking. Multiplayer is a bit twiddly, as the central server can be hard to find a match on. There is a steep difficulty level for beginners. These factors make Rust a cult favorite but not a megahit. 7.3/10. 
-
-## Thanks
-
-Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, and
-
-- rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
-- rust-lang.org, Rust reference, https://doc.rust-lang.org
-- rust-lang.org, Rust by example, https://doc.rust-lang.org/rust-by-example/
-- rust playground, from integer32, https://play.integer32.com/
-- Phil Opp builds an OS in rust, https://os.phil-opp.com/unit-testing/
-- Rust Cookbook, Language Nursery https://rust-lang-nursery.github.io/rust-cookbook/algorithms/sorting.html
-- Itertools docs https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
-- carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
-- c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
-- codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
-- Adam Leventhal post here, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
-- Shepmaster, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
-- again, https://stackoverflow.com/questions/32381414/converting-a-hexadecimal-string-to-a-decimal-integer
-- user4815162342, https://stackoverflow.com/questions/26836488/how-to-sort-a-vector-in-rust
-- mbrubek, https://www.reddit.com/r/rust/comments/3fg0xr/how_do_i_find_the_max_value_in_a_vecf64/
-- https://stackoverflow.com/questions/19671845/how-can-i-generate-a-random-number-within-a-range-in-rust
-- Amir Shrestha https://amirkoblog.wordpress.com/2018/07/05/calling-native-c-code-from-rust/ 
-- Julia Evans https://jvns.ca/blog/2016/01/18/calling-c-from-rust/
-- huon https://stackoverflow.com/questions/23850486/how-do-i-convert-a-string-into-a-vector-of-bytes-in-rust
-- EvilTak https://stackoverflow.com/questions/43176841/how-to-access-the-element-at-variable-index-of-a-tuple
-- https://www.90daykorean.com/korean-proverbs-sayings/
-- oli_obk https://stackoverflow.com/questions/30186037/how-can-i-read-a-single-line-from-stdin
-- ogeon https://users.rust-lang.org/t/how-to-get-a-substring-of-a-string/1351
-- A.R https://stackoverflow.com/questions/54472982/converting-a-vector-of-integers-to-and-from-bytes-in-rust
-- dten https://stackoverflow.com/questions/25060583/what-is-the-preferred-way-to-byte-swap-values-in-rust
-- How To Rust-doc https://brson.github.io/2012/04/14/how-to-rustdoc
-- Pavel Strakhov https://stackoverflow.com/questions/40030551/how-to-decode-and-encode-a-float-in-rust
-- Zargony https://stackoverflow.com/questions/19650265/is-there-a-faster-shorter-way-to-initialize-variables-in-a-rust-struct/19653453#19653453
-- Wesley Wiser https://stackoverflow.com/questions/41510424/most-idiomatic-way-to-create-a-default-struct
